@@ -1,8 +1,8 @@
 <?php
 require __DIR__ . '/Alunno.php';
-class Classe{
-    protected $array=[];
+class Classe implements JsonSerializable {
     protected $nome;
+    protected $array=[];
     public function __construct(){
         $this->nome = "5B";
         $a1 = new Alunno("aaa","bbb",25);
@@ -22,8 +22,24 @@ class Classe{
         return $this->array;
     }
 
+    public function getAlunnoByNome($nome){
+        foreach($this->array as $a){
+            if($nome == $a->getNome()){
+                return $a;
+            }
+        }
+        return null;
+    }
 
-
+    public function jsonSerialize() {
+        $attrs = [];
+        $class_vars = get_class_vars(get_class($this));
+        foreach ($class_vars as $name => $value) {
+          $attrs[$name]=$this->{$name};
+          
+         }
+        return $attrs;
+    }
 
 
 }
